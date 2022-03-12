@@ -82,6 +82,29 @@ public interface Manager {
 	 * 
 	 */
 	UpdateReport deleteCourse(CourseFields match, Boolean moreThanOne);
+
+	/**
+	 * Adds the given school
+	 */
+	void addSchool(School school);
+
+	/**
+	 * Get a list of courses matching the given data.
+	 * @param school - the name of school to matched to
+	 * @return a list of results
+	 */
+	List<Course> listSchools(String school);
+	/**
+	 * Delete course.
+	 * @param school
+	 * @return UpdateReport indicating the number of matching records, and the number deleted:
+	 * 	    1: if one record deleted
+	 *      0: if no records matched or deleted
+	 *      >1: if multiple records matched and deleted
+	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
+	 *
+	 */
+	UpdateReport deleteSchool(String school, Boolean moreThanOne);
 	
 	/**
 	 * Gets a single suggested completion which will be something in our database that matches the given prefix, e.g.
