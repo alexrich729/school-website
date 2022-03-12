@@ -5,9 +5,9 @@ The static website can be used to manage a list of schools, users (students and 
 
 The APIs can also be directly invoked to manage the entities, and are used by the website.
 
-# How to build and use
-
 TODO: include website screenshots here
+
+# How to build and use
 
 ## build the code
 
@@ -27,6 +27,10 @@ TODO: what is the command
 
 TODO: insert diagram here
 
+# Object Model
+
+TODO: insert diagram here
+
 # Workplan
 
 ## APIs to implement
@@ -43,6 +47,7 @@ Search APIs like below
 ## Additional APIs to implement
 
 * [ ] all the above for a course
+* [ ] all the above for a school
 * [ ] attach or detach course to/from user
 * [ ] attach or detach course to/from school
 * [ ] suggestions APIs for each field:  name, email, school, course - given a string, what matches do we have in the database?
