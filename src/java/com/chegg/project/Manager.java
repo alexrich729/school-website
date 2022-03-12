@@ -3,9 +3,8 @@
  */
 package com.chegg.project;
 
-import java.util.Set;
+import java.util.List;
 
-import com.chegg.project.exceptions.LockedFieldException;
 import com.chegg.project.exceptions.TooManyMatchesException;
 
 /**
@@ -26,20 +25,17 @@ public interface Manager {
 	 *  @param selector - User fields that are to be matched to find the users to update
 	 *  @param newData - the new field values to assign to matching users
 	 *  @param moreThanOne - allows updating more than one user record
-	 *  @param locked - caller may specify fields by name that should not be accidentally modified, e.g. the type of user
 	 *  @return UpdateReport indicating the number of users selected and the number updated
 	 *  @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
-	 *  @throws LockedFieldException if the newData differs compared to >=1 selected records and >=1 changed fields are locked
 	 */
-	UpdateReport updateUser(UserFields selector, UserFields newData, Boolean moreThanOne, Set<String> locked)
-			throws TooManyMatchesException, LockedFieldException;
+	UpdateReport updateUser(UserFields selector, UserFields newData, Boolean moreThanOne)
+			throws TooManyMatchesException;
 	/**
 	 * Get a list of users matching the given data.
 	 * @param match - the fields that should be matched to generate a list of results
-	 * @param request - the next set of records to fetch
-	 * @return a page of results
+	 * @return a list of results
 	 */
-	Page<User> listUsers(UserFields match, PageRequest request);
+	List<User> listUsers(UserFields match);
 	/**
 	 * Delete user.
 	 * @param match
@@ -63,21 +59,18 @@ public interface Manager {
 	 * @param selector - course fields that are to be matched to find the courses to update
 	 * @param newData - the new field values to assign to matching courses
 	 * @param moreThanOne - allows updating more than one course record
-	 * @param locked - caller may specify fields by name that should not be accidentally modified, e.g. the associated school
 	 * @return UpdateReport indicating the number of users selected and the number updated
 	 * @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
-	 * @throws LockedFieldException if the newData differs compared to >=1 selected records and >=1 changed fields are locked
 	 */
-	Boolean updateCourse(CourseFields selector, CourseFields newData, Boolean moreThanOne, Set<String> locked)
-		throws TooManyMatchesException, LockedFieldException;
+	Boolean updateCourse(CourseFields selector, CourseFields newData, Boolean moreThanOne)
+		throws TooManyMatchesException;
 	
 	/**
 	 * Get a list of courses matching the given data.
 	 * @param match - the fields that should be matched to generate a list of results
-	 * @param request - the next set of records to fetch
-	 * @return a page of results
+	 * @return a list of results
 	 */
-	Page<Course> listCourses(CourseFields match, PageRequest request);
+	List<Course> listCourses(CourseFields match);
 	/**
 	 * Delete course.
 	 * @param match
