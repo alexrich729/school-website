@@ -28,4 +28,5 @@ public enum FieldType {
     String getName() {
         return this.name;
     }
+
 }
