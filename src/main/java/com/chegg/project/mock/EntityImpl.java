@@ -1,7 +1,11 @@
 package com.chegg.project.mock;
 
+import com.chegg.project.Config;
+import com.chegg.project.Course;
 import com.chegg.project.EntityType;
 import com.chegg.project.Field;
+import com.chegg.project.School;
+import com.chegg.project.User;
 import com.chegg.project.exceptions.runtime.ValidationException;
 
 import java.util.List;
@@ -12,52 +16,63 @@ import java.util.List;
  *
  */
 public class EntityImpl extends EntityFieldsImpl {
-	public EntityImpl(EntityType type, List<Field> fields) {
-		super(type, fields);
+	/** For children as they are only constructed through factory method */
+	protected EntityImpl() {}
+	
+	public EntityImpl(EntityType type, List<Field> fields, Config config) {
+		super(type, fields, config);
+		validate(this.fields);
+	}
+	
+	public EntityImpl(EntityFieldsImpl efi) {
+		super(efi);
+		validate(this.fields);
 	}
 
 	/**
-	 * @param fields should have a complete set of fields for entity type
+	 * @param allFields should have a complete set of fields for entity type
 	 * @throws ValidationException if any required fields are missing
 	 */
-	public static void validate(EntityFieldsImpl fields) throws ValidationException {
-		List<Field> allFields = fields.getAllFields();
-		// checks if any of the fields have the same name in which case it throws an error
-		for (int i = 0; i < allFields.size(); i++) {
-			for (int j = i + 1; j < allFields.size(); j++) {
-				if (allFields.get(i).getName().equals(allFields.get(j).getName())) {
-					throw new ValidationException("Attempt to create an object that has multiple fields with the same name.");
-				}
+	public void validate(List<Field> allFields) throws ValidationException {
+		List<Field> requiredFields = getRequiredFields();
+		for (int i = 0; i < requiredFields.size(); i++) {
+			Field curField = requiredFields.get(i);
+			if (!containsField(allFields, curField)) {
+				throw new ValidationException("Missing required field with name " + curField.getName() + " and type " + curField.getType() + " in a " + this.type + ".");
 			}
-		}
-
-		List<Field> requiredFields = fields.getRequiredFields();
-		int reqCount = 0;
-		for (int i = 0; i < allFields.size(); i++) {
-			Field curField = allFields.get(i);
-			if (containsField(requiredFields, curField))  {
-				reqCount++;
-			} else if (!containsField(fields.getOptionalFields(), curField)) {
-				// exception when field isn't required or optional
-				throw new ValidationException();
-			}
-		}
-		// checks to see if all required fields were found
-		if (reqCount < requiredFields.size()) {
-			throw new ValidationException();
 		}
 	}
-
+	
 	/**
-	 * Helper function for validate.
-	 * @param fields to look for field toFind in
-	 * @param toFind is a field we are looking for in list
-	 * @return true if field is in list, false otherwise
+	 * @return Course version of this.
+	 * @throws ValidationException if this isn't of type course.
 	 */
-	public static boolean containsField(List<Field> fields, Field toFind) {
-		for (int i = 0; i < fields.size(); i++) {
-			if (fields.get(i).isSameField(toFind)) { return true; }
+	public Course buildCourse() throws ValidationException {
+		if (this.type != EntityType.COURSE) {
+			throw new ValidationException("Attempt to build Course with Entity of wrong type.");
 		}
-		return false;
+		return (CourseImpl)this;
+	}
+	
+	/**
+	 * @return User version of this.
+	 * @throws ValidationException if this isn't of type user.
+	 */
+	public User buildUser() throws ValidationException {
+		if (this.type != EntityType.USER) {
+			throw new ValidationException("Attempt to build User with Entity of wrong type.");
+		}
+		return (UserImpl)this;
+	}
+	
+	/**
+	 * @return School version of this.
+	 * @throws ValidationException if this isn't of type school.
+	 */
+	public School buildSchool() throws ValidationException {
+		if (this.type != EntityType.SCHOOL) {
+			throw new ValidationException("Attempt to build School with Entity of wrong type.");
+		}
+		return (SchoolImpl)this;
 	}
 }

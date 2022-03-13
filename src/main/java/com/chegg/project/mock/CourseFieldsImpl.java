@@ -1,12 +1,12 @@
 package com.chegg.project.mock;
 
-import com.chegg.project.EntityType;
+import com.chegg.project.CourseFields;
 
-public class CourseFieldsImpl extends EntityFieldsImpl {
-
-	public CourseFieldsImpl(CourseFieldsImpl courseFields) {
-		super(EntityType.COURSE);
-		this.setAllFields(courseFields.getAllFields());
-	}
+/**
+ * Extends EntityFieldsImpl and only constructed through factory method.
+ * @author alexrich729
+ *
+ */
+public class CourseFieldsImpl extends EntityFieldsImpl implements CourseFields {
 
 }

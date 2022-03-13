@@ -39,6 +39,10 @@ public interface EntityFields {
 	 */
 	Field getField(String fieldName);
 	/**
+	 * @return config being used
+	 */
+	Config getConfig();
+	/**
 	 * Sets the new field into the entity. If field with same name and type exists that field is overridden.
 	 * @param newField
 	 * @throws FieldNotSupportedException if the Entity is not configured with the given field

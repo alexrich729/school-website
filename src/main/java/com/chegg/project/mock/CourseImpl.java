@@ -1,17 +1,7 @@
 package com.chegg.project.mock;
 
-import com.chegg.project.exceptions.runtime.ValidationException;
+import com.chegg.project.Course;
 
-public class CourseImpl extends CourseFieldsImpl {
+public class CourseImpl extends EntityImpl implements Course {
 	
-	private CourseFieldsImpl courseFields;
-	
-	/**
-	 * @param courseFields should contain all fields needed to represent a course
-	 * @throws ValidationException if any required fields are missing
-	 */
-	public CourseImpl(CourseFieldsImpl courseFields) throws ValidationException {
-		super(courseFields);
-		EntityImpl.validate(courseFields);
-	}
 }
