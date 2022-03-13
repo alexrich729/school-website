@@ -6,7 +6,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.chegg.project.CourseFields;
+import com.chegg.project.EntityType;
+
 public class CourseFieldsImplTest {
+	// TODO: private CourseFields courseField = new CourseFieldsImpl();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -18,6 +22,7 @@ public class CourseFieldsImplTest {
 
 	@Test
 	public void testGetType() {
+		assertEquals(EntityType.COURSE, 0);
 		fail("Not yet implemented");
 	}
 

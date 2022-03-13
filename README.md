@@ -11,15 +11,15 @@ TODO: include website screenshots here
 
 ## build the code
 
-TODO: what is the command?
+`./gradlew assemble`
 
 ## run tests
 
-TODO: what is the command?
+`./gradlew build`
 
 ## run the server
 
-TODO: what is the command
+`./gradle run`
 
 ## access the static website
 
