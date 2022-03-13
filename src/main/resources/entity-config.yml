@@ -1,0 +1,28 @@
+---
+# Configuration for all the entity types in terms of fields
+# Top-level entries are entity types
+# Fields must have a name and type, and can be marked as required if the entity is not
+#   complete without the field having a value; can also be marked multi-value with "multi"
+
+USER:
+  fields:
+    - name: name
+      type: STRING
+      required: true
+    - name: email
+      type: EMAIL
+      required: true
+    - name: isStudent
+      type: BOOLEAN
+    - name: isProfessor
+      type: BOOLEAN
+    - name: school
+      type: SCHOOL
+      multi: true
+      
+SCHOOL:
+  fields:
+    - name: name
+      type: STRING
+      required: true
+  
