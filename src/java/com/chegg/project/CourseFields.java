@@ -5,6 +5,6 @@ package com.chegg.project;
  * @author alexrich729
  *
  */
-public interface CourseFields {
+public interface CourseFields extends EntityFields {
 
 }

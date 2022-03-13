@@ -1,11 +1,10 @@
 package com.chegg.project;
 
 /**
-  * Represents a course that a student may take or a professor may take.
+  * Represents a course that a student may take or a professor may take.  Use the Entity interface to get or set fields.
   * @author alexrich729
   * 
   */
 
-public interface Course {
-
+public interface Course extends Entity {
 }

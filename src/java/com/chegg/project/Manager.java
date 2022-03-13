@@ -110,10 +110,10 @@ public interface Manager {
 	 * Gets a single suggested completion which will be something in our database that matches the given prefix, e.g.
 	 *   prefix is "Al", then we could return "Alex", even if there are other possible matches.  We just pick the next alphabetical.
 	 * @param prefix - the part of the string that has to match
-	 * @param recordType - the type of record we're looking for, a student, professor, any user, or a course
+	 * @param entityType - the type of record we're looking for, a student, professor, any user, or a course
 	 * @return a single match, or null if there is no match
 	 * @throws IllegalArgumentException if the recordType is not one of User or Course
 	 */
-	String suggest(String prefix, RecordType recordType);
+	String suggest(String prefix, EntityType entityType);
 	
 }
