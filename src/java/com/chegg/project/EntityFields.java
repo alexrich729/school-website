@@ -14,7 +14,11 @@ import com.chegg.project.exceptions.runtime.FieldTypeException;
  *
  */
 
-interface EntityFields {
+public interface EntityFields {
+	/**
+	 * @return the type of entity represented
+	 */
+	EntityType getType();
 	/**
 	 * @return all the fields in the entity, in the configured order
 	 */

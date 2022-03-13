@@ -11,5 +11,5 @@ package com.chegg.project;
  *
  */
 
-interface Entity extends EntityFields {
+public interface Entity extends EntityFields {
 }
