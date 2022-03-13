@@ -9,12 +9,14 @@ import com.chegg.project.exceptions.runtime.FieldNotSupportedException;
 import com.chegg.project.exceptions.runtime.FieldTypeException;
 
 public class EntityFieldsImpl implements EntityFields {
-	private EntityType type;
-	private List<Field> fields;
+	protected EntityType type;
+	protected List<Field> fields;
+	protected Config config;
 
-	public EntityFieldsImpl(EntityType type) {
+	public EntityFieldsImpl(EntityType type, Config config) {
 		this.type = type;
-		fields = new ArrayList<>();
+		this.fields = new ArrayList<>();
+		this.config = config;
 	}
 
 	public EntityFieldsImpl(EntityType type, List<Field> fields) {

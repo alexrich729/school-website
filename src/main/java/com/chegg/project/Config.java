@@ -17,13 +17,12 @@ public class Config {
 	public Config() {
 		
 	}
-	
-    public static List<Field> getRequiredFields(EntityType type) {
+    public List<Field> getRequiredFields(EntityType type) {
         //TODO
         return null;
     }
 
-    public static List<Field> getOptionalFields(EntityType type) {
+    public List<Field> getOptionalFields(EntityType type) {
         //TODO
         return null;
     }
