@@ -6,5 +6,5 @@ package com.chegg.project;
  * @author alexrich729
  *
  */
-public interface UserFields {
+public interface UserFields extends EntityFields {
 }

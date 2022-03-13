@@ -10,4 +10,19 @@ package com.chegg.project;
  */
 public interface Field {
 
+    /**
+     * @return Gets the name
+     */
+    String getName();
+
+    /**
+     * @return Gets the value
+     */
+    Object getValue();
+
+    /**
+     * @return Gets the type
+     */
+    FieldType getType();
+
 }
