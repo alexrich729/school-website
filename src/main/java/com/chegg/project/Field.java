@@ -45,6 +45,10 @@ public class Field {
     	if (oneVal != null) {
     		// check value type
     		switch (type) {
+    		case BOOLEAN:
+    			if (! (oneVal instanceof Boolean))
+    				throw new IllegalArgumentException
+    				("Type is BOOLEAN but value is " + oneVal.getClass().toString());
     		case STRING:
     			if (! (oneVal instanceof String))
     				throw new IllegalArgumentException

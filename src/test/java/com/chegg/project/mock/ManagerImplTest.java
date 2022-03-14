@@ -17,6 +17,19 @@ public class ManagerImplTest {
 	public static void setUpBeforeClass() throws Exception {
 		Config config = new Config();
 		List<User> users = new ArrayList<>();
+		List<Course> courses = new ArrayList<>();
+		List<School> schools = new ArrayList<>();
+		for (int i = 0; i < 26; i++) {
+			List<Field> fields = new ArrayList<>();
+			fields.add(new Field("name", Character.toString((char) ('A' + i)), FieldType.STRING, true, null));
+			fields.add(new Field("email", Character.toString((char) ('A' + i)) + "@email.com", FieldType.STRING, true, null));
+			if (i % 2 == 0) {
+				fields.add(new Field("isStudent", true, FieldType.BOOLEAN, null, null));
+			} else {
+				fields.add(new Field("isProfessor", true, FieldType.BOOLEAN, null, null));
+			}
+			users.add(new UserImpl(EntityType.USER, fields, config))
+		}
 		
 		Manager manager = new ManagerImpl();
 
@@ -24,6 +37,12 @@ public class ManagerImplTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+	}
+	
+	public static Entity createNewEntity(EntityFields ef) {
+		String name = (char) ('A' + (int)( Math.random() * 26.0)) + "" + (char) ('a' + (int)( Math.random() * 26.0)) + "" + (char) ('a' + (int)( Math.random() * 26.0));
+		ef.setField("name", ef);
+		return null;
 	}
 
 	@Test
