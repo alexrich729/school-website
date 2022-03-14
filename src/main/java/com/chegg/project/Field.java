@@ -101,9 +101,7 @@ public class Field {
         	this.required = false;
         if (multi == null)
         	this.multi = false;
-        
-        System.out.println("value of multi: " + multi + " for field " + name);
-        
+                
         checkValue(value);
     }
 

@@ -47,7 +47,7 @@ public interface EntityFields {
 	Field getField(String fieldName);
 	
 	/**
-	 * @param efi is to compare with
+	 * @param efi is to compare with; if it's null, we match everything
 	 * @return true if has all the same values as efi, false otherwise
 	 */
 	boolean hasFieldValues(EntityFieldsImpl efi);
