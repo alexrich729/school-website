@@ -138,4 +138,12 @@ public class FieldImpl implements Field {
     public boolean isSameField(Field field) {
         return field.getName().equals(name) && field.getType() == type;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public boolean isSameFieldAndVal(Field field) {
+		return isSameField(field) && field.getValue().equals(value);
+	}
 }

@@ -26,11 +26,16 @@ public interface Field {
     FieldType getType();
 
     /**
-     * Checks to see if given field has the same name and type as this field
      * @param field to compare with
      * @return  true if name and type are the same, false otherwise
      */
     boolean isSameField(Field field);
+    
+    /**
+     * @param field to compare with
+     * @return true if name, type, and value are the same, false otherwise
+     */
+    boolean isSameFieldAndVal(Field field);
 
 	/**
 	 * @return true iff this field is required to be set in the entity where it is used

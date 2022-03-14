@@ -17,35 +17,37 @@ import com.chegg.project.exceptions.TooManyMatchesException;
 public interface Manager {
 	// CORE APIS
 	
-	/** Adds a user, which may be a student or professor */
+	/** Adds a user */
 	void addUser(User user);
 	
 	/** 
-	 *  Updates a user in two steps:  1) find the user(s) to update, 2) update them
-	 *  @param selector - User fields that are to be matched to find the users to update
-	 *  @param newData - the new field values to assign to matching users
-	 *  @param moreThanOne - allows updating more than one user record
-	 *  @return UpdateReport indicating the number of users selected and the number updated
+	 *  Updates an entity in two steps:  1) find the entity(s) to update, 2) update them
+	 *  @param selector - Entity fields that are to be matched to find the entities to update
+	 *  @param newData - the new field values to assign to matching entities
+	 *  @param moreThanOne - allows updating more than one entity record
+	 *  @param entities - data of entity type being updated
+	 *  @return int indicating the number of entities updated
 	 *  @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
 	 */
-	UpdateReport updateUser(UserFields selector, UserFields newData, Boolean moreThanOne)
+	int updateUser(EntityFields selector, EntityFields newData, boolean moreThanOne, List<Entity> entities)
 			throws TooManyMatchesException;
 	/**
-	 * Get a list of users matching the given data.
+	 * Get a list of entities matching the given data.
 	 * @param match - the fields that should be matched to generate a list of results
+	 * @param entities - data of entity type being listed
 	 * @return a list of results
 	 */
-	List<User> listUsers(UserFields match);
+	List<Entity> listEntities(EntityFields match, List<Entity> entities);
 	/**
-	 * Delete user.
+	 * Delete entity.
 	 * @param match
-	 * @return UpdateReport indicating the number of matching records, and the number deleted:
+	 * @return int indicating the number of records deleted:
 	 * 	    1: if one record deleted
 	 *      0: if no records matched or deleted
 	 *      >1: if multiple records matched and deleted
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 */
-	UpdateReport deleteUser(UserFields match, Boolean moreThanOne);
+	int deleteEntity(EntityFields match, Boolean moreThanOne, List<Entity> entities);
 	
 	// ADDITIONAL APIS
 	
@@ -74,14 +76,14 @@ public interface Manager {
 	/**
 	 * Delete course.
 	 * @param match
-	 * @return UpdateReport indicating the number of matching records, and the number deleted:
+	 * @return int indicating the number of records deleted:
 	 * 	    1: if one record deleted
 	 *      0: if no records matched or deleted
 	 *      >1: if multiple records matched and deleted
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 * 
 	 */
-	UpdateReport deleteCourse(CourseFields match, Boolean moreThanOne);
+	int deleteCourse(CourseFields match, Boolean moreThanOne);
 
 	/**
 	 * Adds the given school
@@ -97,14 +99,14 @@ public interface Manager {
 	/**
 	 * Delete course.
 	 * @param school
-	 * @return UpdateReport indicating the number of matching records, and the number deleted:
+	 * @return int indicating the number of records deleted:
 	 * 	    1: if one record deleted
 	 *      0: if no records matched or deleted
 	 *      >1: if multiple records matched and deleted
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 *
 	 */
-	UpdateReport deleteSchool(String school, Boolean moreThanOne);
+	int deleteSchool(String school, Boolean moreThanOne);
 	
 	/**
 	 * Gets a single suggested completion which will be something in our database that matches the given prefix, e.g.

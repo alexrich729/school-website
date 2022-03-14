@@ -210,4 +210,23 @@ public class EntityFieldsImpl implements EntityFields {
 		return (SchoolFieldsImpl)this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasFieldValues(EntityFieldsImpl efi) {
+		List<Field> otherFields = efi.getAllFields();
+		for (int i = 0; i < otherFields.size(); i++) {
+			Field tmpField = otherFields.get(i);
+			boolean fieldFound = false;
+			for (int j = 0; j < fields.size(); j++) {
+				if (tmpField.isSameFieldAndVal(fields.get(j)))
+					fieldFound = true;
+			}
+			if (!fieldFound)
+				return false;
+		}
+		return true;
+	}
+
 }

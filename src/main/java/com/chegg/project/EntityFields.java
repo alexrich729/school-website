@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chegg.project.exceptions.runtime.FieldNotSupportedException;
 import com.chegg.project.exceptions.runtime.FieldTypeException;
+import com.chegg.project.mock.EntityFieldsImpl;
 
 /**
  * 
@@ -38,6 +39,12 @@ public interface EntityFields {
 	 * @return the field specified, or null if no such field exists in the entity
 	 */
 	Field getField(String fieldName);
+	
+	/**
+	 * @param efi is to compare with
+	 * @return true if has all the same values as efi, false otherwise
+	 */
+	boolean hasFieldValues(EntityFieldsImpl efi);
 	/**
 	 * @return config being used
 	 */
