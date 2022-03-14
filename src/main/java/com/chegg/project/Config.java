@@ -1,5 +1,6 @@
 package com.chegg.project;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +25,17 @@ public class Config {
 	
 	/**
 	 * Loads the entity configuration
+	 * @throws IOException  if the config cannot be read
 	 */
-	public Config() {
+	public Config() throws IOException {
 		Yaml yaml = new Yaml(new SafeConstructor() /* basic java objects only */);
 		InputStream inputStream = this.getClass()
 				  .getClassLoader()
-				  .getResourceAsStream("entity-config.yaml");
-				yamlObj = yaml.load(inputStream);
-				System.out.println(yamlObj);
+				  .getResourceAsStream("entity-config.yml");
+		if (inputStream == null)
+			throw new IOException("Unable to read configuration file");
+		yamlObj = yaml.load(inputStream);
+		System.out.println(yamlObj);
 	}
 
 	/*

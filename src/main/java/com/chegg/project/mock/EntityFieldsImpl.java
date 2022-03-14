@@ -132,7 +132,9 @@ public class EntityFieldsImpl implements EntityFields {
 				configuredField = field;
 		}
 		if (configuredField == null)
-			throw new FieldNotSupportedException("No field " + name + " in entity of type " + getType().toString());
+			throw new FieldNotSupportedException
+			("No field \"" + name + "\" in entity of type " + getType().toString() + "; configured fields are:" +
+			getConfiguredFields().toString());
 		
 		// Next, get the existing field, if there is one
 		Field existingField = null;
@@ -178,7 +180,7 @@ public class EntityFieldsImpl implements EntityFields {
 		if (this.type != EntityType.COURSE) {
 			throw new ValidationException("Attempt to build CourseFields with EntityFields of wrong type.");
 		}
-		return (CourseFieldsImpl)this;
+		return new CourseFieldsImpl(this);
 	}
 	
 	/**
@@ -189,7 +191,7 @@ public class EntityFieldsImpl implements EntityFields {
 		if (this.type != EntityType.USER) {
 			throw new ValidationException("Attempt to build UserFields with EntityFields of wrong type.");
 		}
-		return (UserFieldsImpl)this;
+		return new UserFieldsImpl(this);
 	}
 	
 	/**
@@ -200,7 +202,7 @@ public class EntityFieldsImpl implements EntityFields {
 		if (this.type != EntityType.SCHOOL) {
 			throw new ValidationException("Attempt to build SchoolFields with EntityFields of wrong type.");
 		}
-		return (SchoolFieldsImpl)this;
+		return new SchoolFieldsImpl(this);
 	}
 
 	/**

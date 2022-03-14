@@ -24,6 +24,10 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre', 'org.yaml:snakeyaml:1.21'
 }
 
+startScripts {
+    classpath += files('src/dist/lib/resources')
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'com.chegg.project.Server'
