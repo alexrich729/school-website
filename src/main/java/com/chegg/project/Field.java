@@ -51,6 +51,12 @@ public class Field {
     			if (! (oneVal instanceof Boolean))
     				throw new IllegalArgumentException
     				("Type is BOOLEAN but value is " + oneVal.getClass().toString());
+    			break;
+    		case EMAIL:
+    			if (! (oneVal instanceof String) || !((String)oneVal).contains(".com") || !((String)oneVal).contains("@"))
+    				throw new IllegalArgumentException
+    				("Type is EMAIL but value is " + oneVal.getClass().toString() + ". If value is correct make sure it is in form: example@email.com");
+    			break;
     		case STRING:
     			if (! (oneVal instanceof String))
     				throw new IllegalArgumentException

@@ -40,6 +40,11 @@ public class ManagerImplTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 	
+	/**
+	 * Creates a new User, Course, or School
+	 * @param ef is of type that you want to be created
+	 * @return the created entity
+	 */
 	public static Entity createNewEntity(EntityFieldsImpl ef) {
 		double rand1 = Math.random();
 		double rand2 = Math.random();
@@ -48,28 +53,32 @@ public class ManagerImplTest {
 		String name = (char) ('A' + (int)( rand1 * 26.0)) + "" + (char) ('a' + (int)( rand2 * 26.0)) + "" + (char) ('a' + (int)( rand3 * 26.0));
 		ef.setField("name", name);
 		
+		// for if one of the fields is a list of schools
+		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, ef.getConfig());
+		schoolFields.setField("name", name);
+		Entity schoolEntity = new EntityImpl(schoolFields);
+		School school = schoolEntity.buildSchool();
+		List<School> schools = new ArrayList<>();
+		schools.add(school);
+		
 		
 		if (ef.getType() == EntityType.SCHOOL) {
-			Entity schoolEntity = new EntityImpl(ef);
-			return schoolEntity.buildSchool();
+			return school;
 		} else if (ef.getType() == EntityType.COURSE) {
-			if (rand2 >= 0.5)
-				ef.setField("school", name);
+			if (rand2 >= 0.5) {
+				ef.setField("school", schools);
+			}
 			Entity courseEntity = new EntityImpl(ef);
 			return courseEntity.buildCourse();
 		} else if (ef.getType() == EntityType.USER) {
-			ef.setField("email", name + "@email");
+			ef.setField("email", name + "@email.com");
 			if (rand1 >= 0.5)
 				ef.setField("isStudent", true);
 			else
-				ef.setField("isTeacher", true);
+				ef.setField("isProfessor", true);
 			
 			if (rand3 >= 0.5) {
-				EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, ef.getConfig());
-				schoolFields.setField("name", name);
-				Entity schoolEntity = new EntityImpl(schoolFields);
-				School school = schoolEntity.buildSchool();
-				ef.setField("school", school);
+				ef.setField("school", schools);
 			}
 			Entity userEntity = new EntityImpl(ef);
 			return userEntity.buildUser();
@@ -86,7 +95,7 @@ public class ManagerImplTest {
 	public void testAddUser() {
 		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, config);
 		manager.addUser(createNewEntity(userFields).buildUser());
-		assertEquals(101, manager.listUsers(null));
+		assertEquals(101, manager.listUsers(null).size());
 	}
 
 	@Test
@@ -106,8 +115,9 @@ public class ManagerImplTest {
 
 	@Test
 	public void testAddCourse() {
-		fail("Not yet implemented");
-	}
+		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, config);
+		manager.addCourse(createNewEntity(courseFields).buildCourse());
+		assertEquals(101, manager.listCourses(null).size());	}
 
 	@Test
 	public void testUpdateCourseCourseFieldsCourseFieldsBoolean() {
@@ -126,7 +136,9 @@ public class ManagerImplTest {
 
 	@Test
 	public void testAddSchool() {
-		fail("Not yet implemented");
+		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, config);
+		manager.addSchool(createNewEntity(schoolFields).buildSchool());
+		assertEquals(101, manager.listSchools(null).size());
 	}
 
 	@Test
