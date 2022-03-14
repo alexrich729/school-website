@@ -16,12 +16,15 @@ import com.chegg.project.*;
 public class ManagerImplTest {
 	private static ManagerImpl manager;
 	private static Config config;
+	private static EntityData data; // keeps track of how many of each type of user we have
 	
 	/**
+	 * @param data if not null, is populated with the number of students vs. professors created; will exceed 100 total, since
+	 *   a few users will be marked as both students and profs
 	 * @return a Manager object with 100 mock entities of each type
 	 * @throws IOException if Config fails to load
 	 */
-	private static ManagerImpl createManagerWithMockData() throws IOException {
+	private static ManagerImpl createManagerWithMockData(EntityData data) throws IOException {
 		config = new Config();
 		List<User> users = new ArrayList<>();
 		List<Course> courses = new ArrayList<>();
@@ -31,18 +34,23 @@ public class ManagerImplTest {
 			EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, config);
 			EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, config);
 			EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, config);
-			schools.add(createNewEntity(schoolFields).buildSchool());
-			courses.add(createNewEntity(courseFields).buildCourse());
-			users.add(createNewEntity(userFields).buildUser());
+			schools.add(createNewEntity(schoolFields, data).buildSchool());
+			courses.add(createNewEntity(courseFields, data).buildCourse());
+			users.add(createNewEntity(userFields, data).buildUser());
 
 		}
 		
 		return new ManagerImpl(users, courses, schools);
 	}
 	
+	private static ManagerImpl createManagerWithMockData() throws IOException {
+		return createManagerWithMockData(null);
+	}
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
-		manager = createManagerWithMockData();
+		data = new EntityData();
+		manager = createManagerWithMockData(data);
 	}
 
 	@AfterClass
@@ -52,9 +60,10 @@ public class ManagerImplTest {
 	/**
 	 * Creates a new User, Course, or School with a random name, and other random values
 	 * @param ef is of type that you want to be created
+	 * @param data is EntityData record that is updated with new counts if not null
 	 * @return the created entity
 	 */
-	public static Entity createNewEntity(EntityFieldsImpl ef) {
+	public static Entity createNewEntity(EntityFieldsImpl ef, EntityData data) {
 		double rand1 = Math.random();
 		double rand2 = Math.random();
 		double rand3 = Math.random();
@@ -70,6 +79,9 @@ public class ManagerImplTest {
 		List<School> schools = new ArrayList<>();
 		schools.add(school);
 		
+		if (data == null)   // keeps logic below simpler to just always record
+			data = new EntityData();
+		
 		
 		if (ef.getType() == EntityType.SCHOOL) {
 			return school;
@@ -81,10 +93,22 @@ public class ManagerImplTest {
 			return courseEntity.buildCourse();
 		} else if (ef.getType() == EntityType.USER) {
 			ef.setField("email", name + "@email.com");
-			if (rand1 >= 0.5)
+			if (rand1 >= 0.5) {
 				ef.setField("isStudent", true);
-			else
+				data.numStudents++;
+				if (rand1 >= 0.95) {
+					ef.setField("isProfessor", true);
+					data.numProfs++;
+				}
+			} else {
 				ef.setField("isProfessor", true);
+				data.numProfs++;
+				if (rand1 <= 0.05) {
+					ef.setField("isStudent", true);
+					data.numStudents++;
+				}
+					
+			}
 			
 			if (rand3 >= 0.5) {
 				ef.setField("school", schools);
@@ -93,6 +117,15 @@ public class ManagerImplTest {
 			return userEntity.buildUser();
 		}
 		return null;
+	}
+	
+	/**
+	 * Creates a new User, Course, or School with a random name, and other random values
+	 * @param ef is of type that you want to be created
+	 * @return the created entity
+	 */
+	public static Entity createNewEntity(EntityFieldsImpl ef) {
+		return createNewEntity(ef);
 	}
 
 	/**
@@ -113,21 +146,63 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * List all users - expect to see them all
+	 */
 	@Test
 	public void testListAllUsers() {
 		List<User> users = manager.listUsers(null);
 		assertEquals(100, users);
 	}
 
+	/**
+	 * List all students - expect to see the right number
+	 */
 	@Test
 	public void testListStudents() {
-		fail("Not yet implemented");
+		EntityFields matchProto = new EntityFieldsImpl(EntityType.USER, config);
+		
+		matchProto.setField("isStudent", true);
+		
+		UserFields match = matchProto.buildUserFields();
+		List<User> students = manager.listUsers(match);
+		
+		assertEquals(data.numStudents, students.size());
 	}
 
+	/**
+	 * List all profs - expect to see the right number
+	 */
 	@Test
 	public void testListProfessors() {
-		fail("Not yet implemented");
+		EntityFields matchProto = new EntityFieldsImpl(EntityType.USER, config);
+		
+		matchProto.setField("isProfessor", true);
+		
+		UserFields match = matchProto.buildUserFields();
+		List<User> profs = manager.listUsers(match);
+		
+		assertEquals(data.numProfs, profs.size());
 	}
+	
+	/**
+	 * List all users who are both students and profs - expect to see a number in the right range
+	 */
+	@Test
+	public void testListStudentTeachers() {
+		EntityFields matchProto = new EntityFieldsImpl(EntityType.USER, config);
+		
+		matchProto.setField("isProfessor", true);
+		matchProto.setField("isStudent", true);
+		
+		UserFields match = matchProto.buildUserFields();
+		List<User> studentTeachers = manager.listUsers(match);
+		
+		assertTrue(studentTeachers.size() > 0);
+		assertTrue(studentTeachers.size() < data.numStudents);
+		assertTrue(studentTeachers.size() < data.numProfs);
+	}
+
 
 	/**
 	 * Add a user and verify that the number of users increases by one
