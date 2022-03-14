@@ -148,7 +148,7 @@ public class CourseFieldsImplTest {
 		EntityFieldsImpl schoolFields2 = new EntityFieldsImpl(EntityType.SCHOOL, config);
 		schoolFields2.setField("name", "Emory");
 		
-		Entity schoolEntity2 = new EntityImpl(schoolFields);
+		Entity schoolEntity2 = new EntityImpl(schoolFields2);
 		School school2 = schoolEntity2.buildSchool();
 
 		schoolList.add(school2);

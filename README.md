@@ -1,11 +1,28 @@
 # school-website
-Simple website includes a mock server and html UI
 
-The static website can be used to manage a list of schools, users (students and professors), and courses associated with each.
+## Assumption
+Student, course, school, etc., are all very simple types to start, but are likely to
+get many more fields as we improve the website.
 
-The APIs can also be directly invoked to manage the entities, and are used by the website.
+## Main ideas
+1. Make all of these entities highly configurable, so we can add new fields just by changing the yaml config file.
+2. The config file can drive all parts of the system:  the business logic, the web API interface, and the GUI (webpage), thus
+ ensuring all three systems stay in perfect synch, with no code!
 
-TODO: include website screenshots here
+## Original goals
+
+1. Simple website includes a mock server and html UI
+2. The static website can be used to manage a list of schools, users (students and professors), and courses associated with each.
+3. The APIs can also be directly invoked to manage the entities, and are used by the website.
+
+TODO: include website screenshots here (website not built yet)
+
+## Result
+I found it complicated to build the type system in java, so I spent a lot of time developing the type system and didn't have
+   time to tackle the web API or GUI, or even unit test all my classes, but I did unit test a couple of the top-level classes
+   to give confidence that the type system and business logic are working at a high level.
+
+
 
 # How to build and use
 
@@ -17,15 +34,21 @@ TODO: include website screenshots here
 
 `./gradlew build`
 
+## view tests
+
+The output will be at `build/reports/tests/test/index.html`.
+Test source code is at `src/test/java`.
+
 ## run the server
 
+TODO: web server not built yet
 `./gradle run`
 
 ## access the static website
 
-# Project Structure
+TODO: website not built yet
 
-TODO: insert diagram here
+# Project Structure
 
 # Object Model
 ![Class Hierarchy-1](https://user-images.githubusercontent.com/67568819/158113306-76194fa8-57be-45d3-8548-4d2593444aff.jpg)
@@ -36,16 +59,20 @@ TODO: insert diagram here
 
 ## APIs to implement
 
-* [ ] Add a user
-* [ ] Update a user
-* [ ] List the users
-* [ ] Delete a user
+Per the assignment:
+
+* [x] Add a user
+* [x] Update a user
+* [x] List the users
+* [x] Delete a user
 Search APIs like below
-* [ ] Find all the students in the given school
-* [ ] Find Students
-* [ ] Find Professors
+* [x] Find all the students in the given school
+* [x] Find Students
+* [x] Find Professors
 
 ## Additional APIs to implement
+
+Per the assignment to implement other APIs that I could "think of"
 
 * [ ] all the above for a course
 * [ ] all the above for a school
@@ -58,18 +85,18 @@ Search APIs like below
 ## Other things to take care of
 
 These are roughly in priority order
-* [ ] javadoc everything
-* [ ] typecheck everything coming into the API
-* [ ] put tests and data separate from source code
+* [x] javadoc everything
+* [x] typecheck everything coming into the API
+* [x] put tests and data separate from source code
 * [ ] use separate file for web server, core logic, and data-source
-* [ ] use a mock library with test data to make the mock "database" / search engine
-* [ ] provide validators
+* [x] use a mock library with test data to make the mock "database" / search engine
+* [x] provide validators
 ** [ ] make sure that the data has no special characters for security
 ** [ ] make sure that the data can convert to the expected type if it's an email or a year
-* [ ] make the objects configurable
+* [x] make the objects configurable
 * [ ] drive the API and the UI off the object configuration
-* [ ] use gradle build system to compile, test, and run the server
-* [ ] use yaml for the configuration
+* [x] use gradle build system to compile, test, and run the server
+* [x] use yaml for the configuration
 * [ ] build the API with GraphQL interface
 * [ ] create a diagram to show the structure of the systems and the code that powers them
 * [ ] implement suggestions in the UI
