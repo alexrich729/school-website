@@ -12,10 +12,12 @@ import org.junit.Test;
 import com.chegg.project.*;
 
 public class ManagerImplTest {
+	private static ManagerImpl manager;
+	private static Config config;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Config config = new Config();
+		config = new Config();
 		List<User> users = new ArrayList<>();
 		List<Course> courses = new ArrayList<>();
 		List<School> schools = new ArrayList<>();
@@ -30,7 +32,7 @@ public class ManagerImplTest {
 
 		}
 		
-		Manager manager = new ManagerImpl(users, courses, schools);
+		manager = new ManagerImpl(users, courses, schools);
 
 	}
 
@@ -82,7 +84,9 @@ public class ManagerImplTest {
 
 	@Test
 	public void testAddUser() {
-		fail("Not yet implemented");
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, config);
+		manager.addUser(createNewEntity(userFields).buildUser());
+		assertEquals(101, manager.listUsers(null));
 	}
 
 	@Test

@@ -210,6 +210,8 @@ public class EntityFieldsImpl implements EntityFields {
 	 */
 	@Override
 	public boolean hasFieldValues(EntityFieldsImpl efi) {
+		if (efi == null)
+			return true;
 		List<Field> otherFields = efi.getSetFields();
 		for (int i = 0; i < otherFields.size(); i++) {
 			Field tmpField = otherFields.get(i);
