@@ -5,6 +5,8 @@ package com.chegg.project;
 
 import java.util.List;
 
+import com.chegg.project.exceptions.runtime.FieldTypeException;
+
 /**
  * This type represents a configurable field in one of the objects we're modeling.
  * @author alexrich729
@@ -27,17 +29,17 @@ public class Field {
     	//  only when it matters for maximum flexibility
     	if (newValue == null) return;
     	
-    	Object oneVal = value; // we'll set this to the first item in a list, if a list is provided
+    	Object oneVal = newValue; // we'll set this to the first item in a list, if a list is provided
 
     	if (multi) {
     		if (! (newValue instanceof List)) {
     			throw new IllegalArgumentException
     			("Multi-value field requires value to be a list, but is " + newValue.getClass().toString());
     		}
-    		if (((List<?>)value).isEmpty()) {
+    		if (((List<?>)newValue).isEmpty()) {
     			oneVal = null;
     		} else {
-    			oneVal = ((List<?>)value).get(0);
+    			oneVal = ((List<?>)newValue).get(0);
     		}
     	}
 
@@ -92,9 +94,9 @@ public class Field {
         
         // Default required and multi to false
         if (required == null)
-        	required = false;
+        	this.required = false;
         if (multi == null)
-        	multi = false;
+        	this.multi = false;
         
         System.out.println("value of multi: " + multi + " for field " + name);
         
@@ -170,10 +172,14 @@ public class Field {
 	 * @param value
 	 * throws FieldTypeException if the value does not match field type
 	 */
-	public void setValue(Object value) {
+	public void setValue(Object value) throws FieldTypeException {
 		assert type != null;
 		
-		checkValue(value);
+		try {
+			checkValue(value);
+		} catch (IllegalArgumentException e) {
+			throw new FieldTypeException(e);
+		}
 		
 		this.value = value;
 	}
