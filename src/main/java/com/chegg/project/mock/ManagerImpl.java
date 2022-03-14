@@ -83,7 +83,7 @@ public class ManagerImpl implements Manager {
 		// removes all matched entities
 		int toRemove = 0;
 		int index = 0;
-		while (index < entities.size()) {
+		while (index < entities.size() && toRemove < entitiesMatched.size()) {
 			Entity tmpEntity = entities.get(index);
 			if (tmpEntity == entitiesMatched.get(toRemove)) {
 				entities.remove(index);

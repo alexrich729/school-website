@@ -2,11 +2,13 @@ package com.chegg.project.mock;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.chegg.project.*;
@@ -14,10 +16,12 @@ import com.chegg.project.*;
 public class ManagerImplTest {
 	private static ManagerImpl manager;
 	private static Config config;
-	private EntityFieldsImpl userFields;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	/**
+	 * @return a Manager object with 100 mock entities of each type
+	 * @throws IOException if Config fails to load
+	 */
+	private static ManagerImpl createManagerWithMockData() throws IOException {
 		config = new Config();
 		List<User> users = new ArrayList<>();
 		List<Course> courses = new ArrayList<>();
@@ -33,8 +37,12 @@ public class ManagerImplTest {
 
 		}
 		
-		manager = new ManagerImpl(users, courses, schools);
-
+		return new ManagerImpl(users, courses, schools);
+	}
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws IOException {
+		manager = createManagerWithMockData();
 	}
 
 	@AfterClass
@@ -42,7 +50,7 @@ public class ManagerImplTest {
 	}
 	
 	/**
-	 * Creates a new User, Course, or School
+	 * Creates a new User, Course, or School with a random name, and other random values
 	 * @param ef is of type that you want to be created
 	 * @return the created entity
 	 */
@@ -87,13 +95,14 @@ public class ManagerImplTest {
 		return null;
 	}
 
+	/**
+	 * Add a user and verify that the number of users increases by one
+	 * @throws IOException if config fails to load
+	 */
 	@Test
-	public void testManagerImpl() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddUser() {
+	public void testAddUser() throws IOException {
+		Manager manager = createManagerWithMockData();
+		
 		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, config);
 		manager.addUser(createNewEntity(userFields).buildUser());
 		assertEquals(101, manager.listUsers(null).size());
@@ -105,23 +114,40 @@ public class ManagerImplTest {
 	}
 
 	@Test
-	public void testListUsers() {
+	public void testListAllUsers() {
+		List<User> users = manager.listUsers(null);
+		assertEquals(100, users);
+	}
+
+	@Test
+	public void testListStudents() {
 		fail("Not yet implemented");
 	}
 
 	/**
 	 * Tests deleteUser by deleting one user and checking if # of users decreases by one
+	 * @throws IOException if config fails to load
 	 */
 	@Test
-	public void testDeleteUser() {
+	public void testDeleteUser() throws IOException {
 		User user = manager.listUsers(null).get(0);
 		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
 		manager.deleteUser(userFields.buildUserFields(), false);
 		assertEquals(99, manager.listUsers(null).size());
 	}
+	
+	public void testListProfessors() {
+		fail("Not yet implemented");
+	}
 
+	/**
+	 * Add a user and verify that the number of users increases by one
+	 * @throws IOException if config fails to load
+	 */
 	@Test
-	public void testAddCourse() {
+	public void testAddCourse() throws IOException {
+		Manager manager = createManagerWithMockData();
+
 		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, config);
 		manager.addCourse(createNewEntity(courseFields).buildCourse());
 		assertEquals(101, manager.listCourses(null).size());	}
@@ -138,17 +164,24 @@ public class ManagerImplTest {
 
 	/**
 	 * Tests deleteCourse by deleting one course and checking if # of courses decreases by one
+	 * @throws IOException if config fails to load
 	 */
 	@Test
-	public void testDeleteCourse() {
+	public void testDeleteCourse() throws IOException {
 		Course course = manager.listCourses(null).get(0);
 		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, course.getSetFields(), config);
 		manager.deleteCourse(courseFields.buildCourseFields(), false);
 		assertEquals(99, manager.listCourses(null).size());
 	}
 
+	/**
+	 * Add a user and verify that the number of users increases by one
+	 * @throws IOException if config fails to load
+	 */
 	@Test
-	public void testAddSchool() {
+	public void testAddSchool() throws IOException {
+		Manager manager = createManagerWithMockData();
+		
 		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, config);
 		manager.addSchool(createNewEntity(schoolFields).buildSchool());
 		assertEquals(101, manager.listSchools(null).size());
@@ -166,15 +199,18 @@ public class ManagerImplTest {
 
 	/**
 	 * Tests deleteSchool by deleting one school and checking if # of schools decreases by one
+	 * @throws IOException if config fails to load
 	 */
 	@Test
-	public void testDeleteSchool() {
+	public void testDeleteSchool() throws IOException {
 		School school = manager.listSchools(null).get(0);
 		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, school.getSetFields(), config);
 		manager.deleteSchool(schoolFields.buildSchoolFields(), false);
 		assertEquals(99, manager.listSchools(null).size());
 	}
 
+	// underlying code is not implemented yet
+	@Ignore
 	@Test
 	public void testSuggest() {
 		fail("Not yet implemented");
