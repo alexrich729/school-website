@@ -12,6 +12,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.chegg.project.*;
+import com.chegg.project.exceptions.TooManyMatchesException;
+import com.chegg.project.exceptions.runtime.ValidationException;
 
 public class ManagerImplTest {
 	private static ManagerImpl manager;
@@ -108,9 +110,24 @@ public class ManagerImplTest {
 		assertEquals(101, manager.listUsers(null).size());
 	}
 
+	/**
+	 * Tests updateUser by updating a user and looking for the user updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateUser finds more than one match
+	 */
 	@Test
-	public void testUpdateUser() {
-		fail("Not yet implemented");
+	public void testUpdateUser() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+		
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	@Test
@@ -154,9 +171,24 @@ public class ManagerImplTest {
 		manager.addCourse(createNewEntity(courseFields).buildCourse());
 		assertEquals(101, manager.listCourses(null).size());	}
 
+	/**
+	 * Tests updateCourse by updating a course and looking for the user updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateCourse finds more than one match
+	 */
 	@Test
-	public void testUpdateCourseCourseFieldsCourseFieldsBoolean() {
-		fail("Not yet implemented");
+	public void testUpdateCourse() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	@Test
@@ -191,9 +223,24 @@ public class ManagerImplTest {
 		assertEquals(101, manager.listSchools(null).size());
 	}
 
+	/**
+	 * Tests updateSchool by updating a user and looking for the school updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateSchool finds more than one match
+	 */
 	@Test
-	public void testUpdateCourseSchoolFieldsSchoolFieldsBoolean() {
-		fail("Not yet implemented");
+	public void testUpdateSchool() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	@Test
