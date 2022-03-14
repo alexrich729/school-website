@@ -25,6 +25,12 @@ public class ManagerImpl implements Manager {
 		courses = new ArrayList<>();
 		schools = new ArrayList<>();
 	}
+	
+	public ManagerImpl(List<User> users, List<Course> courses, List<School> schools) {
+		this.users = users;
+		this.courses = courses;
+		this.schools = schools;
+	}
 
 	/**
 	 * Update matching entities
@@ -213,7 +219,7 @@ public class ManagerImpl implements Manager {
 	 */
 	@Override
 	public String suggest(String prefix, EntityType entityType) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("No implemenation for suggest. Didn't have time to get to it.");
 	}
 
 
