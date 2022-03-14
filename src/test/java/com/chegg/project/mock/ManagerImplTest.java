@@ -130,6 +130,8 @@ public class ManagerImplTest {
 	 */
 	@Test
 	public void testDeleteUser() throws IOException {
+		Manager manager = createManagerWithMockData();
+
 		User user = manager.listUsers(null).get(0);
 		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
 		manager.deleteUser(userFields.buildUserFields(), false);
@@ -168,6 +170,8 @@ public class ManagerImplTest {
 	 */
 	@Test
 	public void testDeleteCourse() throws IOException {
+		Manager manager = createManagerWithMockData();
+
 		Course course = manager.listCourses(null).get(0);
 		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, course.getSetFields(), config);
 		manager.deleteCourse(courseFields.buildCourseFields(), false);
@@ -203,6 +207,8 @@ public class ManagerImplTest {
 	 */
 	@Test
 	public void testDeleteSchool() throws IOException {
+		Manager manager = createManagerWithMockData();
+
 		School school = manager.listSchools(null).get(0);
 		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, school.getSetFields(), config);
 		manager.deleteSchool(schoolFields.buildSchoolFields(), false);
