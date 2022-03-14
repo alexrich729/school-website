@@ -96,6 +96,8 @@ public class Field {
         if (multi == null)
         	multi = false;
         
+        System.out.println("value of multi: " + multi + " for field " + name);
+        
         checkValue(value);
     }
 
@@ -169,7 +171,11 @@ public class Field {
 	 * throws FieldTypeException if the value does not match field type
 	 */
 	public void setValue(Object value) {
+		assert type != null;
 		
+		checkValue(value);
+		
+		this.value = value;
 	}
 
 }

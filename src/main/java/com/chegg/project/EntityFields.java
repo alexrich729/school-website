@@ -84,4 +84,19 @@ public interface EntityFields {
 	 * @throws ValidationException if type of EntityFields is not SCHOOL
 	 */
 	SchoolFields buildSchoolFields() throws ValidationException;
+	
+	/**
+	 * @return a Course entity after casting to CourseFields and validating all required fields present
+	 * @throws ValidationException if type is not COURSE or fields missing
+	Course buildCourse() throws ValidationException;
+	/**
+	 * @return a School entity after casting to SchoolFields and validating all required fields present
+	 * @throws ValidationException if type is not SCHOOL or fields missing
+	User buildUser() throws ValidationException;
+	/**
+	 * @return a School entity after casting to SchoolFields and validating all required fields present
+	 * @throws ValidationException if type is not SCHOOL or fields missing
+	School buildSchool() throws ValidationException;
+	 */
+
 }

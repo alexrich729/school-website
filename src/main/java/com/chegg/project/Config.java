@@ -60,8 +60,8 @@ public class Config {
 	    			Field field = new Field(fieldName, null, FieldType.fromString(fieldType), required, multi);
 	    			val.add(field);
 	    		}
+		    	return val;
 	    	}
-	    	return val;
 	    }
 	    
 	    throw new UnsupportedOperationException("No configuration for " + type.getName() +

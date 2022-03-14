@@ -52,7 +52,7 @@ public class EntityImpl extends EntityFieldsImpl implements Entity {
 		if (this.type != EntityType.COURSE) {
 			throw new ValidationException("Attempt to build Course with Entity of wrong type.");
 		}
-		return (CourseImpl)this;
+		return new CourseImpl(this);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class EntityImpl extends EntityFieldsImpl implements Entity {
 		if (this.type != EntityType.USER) {
 			throw new ValidationException("Attempt to build User with Entity of wrong type.");
 		}
-		return (UserImpl)this;
+		return new UserImpl(this);
 	}
 	
 	/**
@@ -74,6 +74,6 @@ public class EntityImpl extends EntityFieldsImpl implements Entity {
 		if (this.type != EntityType.SCHOOL) {
 			throw new ValidationException("Attempt to build School with Entity of wrong type.");
 		}
-		return (SchoolImpl)this;
+		return new SchoolImpl(this);
 	}
 }

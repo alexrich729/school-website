@@ -148,7 +148,7 @@ public class EntityFieldsImpl implements EntityFields {
 		if (fieldToUpdate == null)
 			fieldToUpdate = new Field(configuredField);
 		
-		// Set the value into the field and add to setFields as needed
+		// Set the value into the field and add to fieldsSet as needed
 		fieldToUpdate.setValue(value);
 		if (existingField == null)
 			fieldsSet.add(fieldToUpdate);

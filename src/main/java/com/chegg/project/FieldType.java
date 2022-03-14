@@ -8,7 +8,7 @@ public enum FieldType {
 	// Each enum will be identified as an entity xor by a string name
 	
 	// Name  entityType  		stringName
-    STRING 	(null, 		 		"String"),
+    STRING 	(null, 		 		"STRING"),
     USER 	(EntityType.USER, 	EntityType.USER.getName()),
     COURSE 	(EntityType.COURSE, EntityType.COURSE.getName()),
     SCHOOL 	(EntityType.SCHOOL, EntityType.SCHOOL.getName());
