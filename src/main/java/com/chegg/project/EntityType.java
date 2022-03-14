@@ -16,6 +16,9 @@ public enum EntityType {
 		this.name = name;
 	}
 	
+	/**
+	 * @return the name of the EntityType
+	 */
 	String getName() {
 		return this.name;
 	}

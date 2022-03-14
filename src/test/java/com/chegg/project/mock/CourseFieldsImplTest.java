@@ -6,7 +6,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.chegg.project.CourseFields;
 import com.chegg.project.EntityType;
 
 public class CourseFieldsImplTest {

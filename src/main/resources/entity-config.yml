@@ -25,4 +25,13 @@ SCHOOL:
     - name: name
       type: STRING
       required: true
+      
+COURSE:
+  fields:
+    - name: name
+      type: STRING
+      required: true
+    - name: school
+      type: SCHOOL
+      multi: true
   

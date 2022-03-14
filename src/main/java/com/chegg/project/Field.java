@@ -32,4 +32,14 @@ public interface Field {
      */
     boolean isSameField(Field field);
 
+	/**
+	 * @return true iff this field is required to be set in the entity where it is used
+	 */
+	Boolean isRequired();
+
+	/**
+	 * @return true iff this field is multi-valued
+	 */
+	Boolean isMulti();
+
 }
