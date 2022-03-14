@@ -14,6 +14,7 @@ import com.chegg.project.*;
 public class ManagerImplTest {
 	private static ManagerImpl manager;
 	private static Config config;
+	private EntityFieldsImpl userFields;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -108,9 +109,15 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests deleteUser by deleting one user and checking if # of users decreases by one
+	 */
 	@Test
 	public void testDeleteUser() {
-		fail("Not yet implemented");
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		manager.deleteUser(userFields.buildUserFields(), false);
+		assertEquals(99, manager.listUsers(null).size());
 	}
 
 	@Test
@@ -129,9 +136,15 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests deleteCourse by deleting one course and checking if # of courses decreases by one
+	 */
 	@Test
 	public void testDeleteCourse() {
-		fail("Not yet implemented");
+		Course course = manager.listCourses(null).get(0);
+		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, course.getSetFields(), config);
+		manager.deleteCourse(courseFields.buildCourseFields(), false);
+		assertEquals(99, manager.listCourses(null).size());
 	}
 
 	@Test
@@ -151,9 +164,15 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests deleteSchool by deleting one school and checking if # of schools decreases by one
+	 */
 	@Test
 	public void testDeleteSchool() {
-		fail("Not yet implemented");
+		School school = manager.listSchools(null).get(0);
+		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, school.getSetFields(), config);
+		manager.deleteSchool(schoolFields.buildSchoolFields(), false);
+		assertEquals(99, manager.listSchools(null).size());
 	}
 
 	@Test
