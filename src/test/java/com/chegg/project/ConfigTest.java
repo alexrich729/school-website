@@ -7,8 +7,6 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.chegg.project.mock.EntityFieldsImpl;
-
 public class ConfigTest {
 	private static Config config = null;
 
