@@ -35,8 +35,7 @@ public class Config {
 		if (inputStream == null)
 			throw new IOException("Unable to read configuration file");
 		yamlObj = yaml.load(inputStream);
-		System.out.println(yamlObj);
-	}
+ 	}
 
 	/*
      * @param type is the type of entity we want to get fields for

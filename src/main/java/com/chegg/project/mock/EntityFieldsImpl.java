@@ -60,7 +60,7 @@ public class EntityFieldsImpl implements EntityFields {
 	 * @param toFind is a field we are looking for in list
 	 * @return true if field is in list, false otherwise
 	 */
-	public static boolean containsField(List<Field> fields, Field toFind) {
+	protected static boolean containsField(List<Field> fields, Field toFind) {
 		for (int i = 0; i < fields.size(); i++) {
 			if (fields.get(i).isSameField(toFind)) { return true; }
 		}

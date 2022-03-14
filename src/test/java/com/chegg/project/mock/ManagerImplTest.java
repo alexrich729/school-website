@@ -12,6 +12,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.chegg.project.*;
+import com.chegg.project.exceptions.TooManyMatchesException;
+import com.chegg.project.exceptions.runtime.ValidationException;
 
 public class ManagerImplTest {
 	private static ManagerImpl manager;
@@ -141,9 +143,24 @@ public class ManagerImplTest {
 		assertEquals(101, manager.listUsers(null).size());
 	}
 
+	/**
+	 * Tests updateUser by updating a user and looking for the user updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateUser finds more than one match
+	 */
 	@Test
-	public void testUpdateUser() {
-		fail("Not yet implemented");
+	public void testUpdateUser() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+		
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	/**
@@ -171,9 +188,23 @@ public class ManagerImplTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * List all profs - expect to see the right number
+=======
+	 * Tests deleteUser by deleting one user and checking if # of users decreases by one
+	 * @throws IOException if config fails to load
+>>>>>>> b4cbb07c8a18f0c16cfa1db8b0a597c73cb60568
 	 */
 	@Test
+	public void testDeleteUser() throws IOException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		manager.deleteUser(userFields.buildUserFields(), false);
+		assertEquals(99, manager.listUsers(null).size());
+	}
+	
 	public void testListProfessors() {
 		EntityFields matchProto = new EntityFieldsImpl(EntityType.USER, config);
 		
@@ -216,9 +247,24 @@ public class ManagerImplTest {
 		manager.addCourse(createNewEntity(courseFields).buildCourse());
 		assertEquals(101, manager.listCourses(null).size());	}
 
+	/**
+	 * Tests updateCourse by updating a course and looking for the user updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateCourse finds more than one match
+	 */
 	@Test
-	public void testUpdateCourseCourseFieldsCourseFieldsBoolean() {
-		fail("Not yet implemented");
+	public void testUpdateCourse() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	@Test
@@ -226,9 +272,18 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests deleteCourse by deleting one course and checking if # of courses decreases by one
+	 * @throws IOException if config fails to load
+	 */
 	@Test
-	public void testDeleteCourse() {
-		fail("Not yet implemented");
+	public void testDeleteCourse() throws IOException {
+		Manager manager = createManagerWithMockData();
+
+		Course course = manager.listCourses(null).get(0);
+		EntityFieldsImpl courseFields = new EntityFieldsImpl(EntityType.COURSE, course.getSetFields(), config);
+		manager.deleteCourse(courseFields.buildCourseFields(), false);
+		assertEquals(99, manager.listCourses(null).size());
 	}
 
 	/**
@@ -244,9 +299,24 @@ public class ManagerImplTest {
 		assertEquals(101, manager.listSchools(null).size());
 	}
 
+	/**
+	 * Tests updateSchool by updating a user and looking for the school updated.
+	 * @throws IOException if Config fails to load
+	 * @throws ValidationException if new EntityFields isn't the type we think it is
+	 * @throws TooManyMatchesException if updateSchool finds more than one match
+	 */
 	@Test
-	public void testUpdateCourseSchoolFieldsSchoolFieldsBoolean() {
-		fail("Not yet implemented");
+	public void testUpdateSchool() throws IOException, ValidationException, TooManyMatchesException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		EntityFieldsImpl searchFields = new EntityFieldsImpl(EntityType.USER, config);
+		searchFields.setField("name", "Needle I. H. Stack");
+		
+		manager.updateUser(userFields.buildUserFields(), searchFields.buildUserFields(), false);
+		List<User> users = manager.listUsers(searchFields.buildUserFields());
+		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
 	@Test
@@ -254,9 +324,18 @@ public class ManagerImplTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests deleteSchool by deleting one school and checking if # of schools decreases by one
+	 * @throws IOException if config fails to load
+	 */
 	@Test
-	public void testDeleteSchool() {
-		fail("Not yet implemented");
+	public void testDeleteSchool() throws IOException {
+		Manager manager = createManagerWithMockData();
+
+		School school = manager.listSchools(null).get(0);
+		EntityFieldsImpl schoolFields = new EntityFieldsImpl(EntityType.SCHOOL, school.getSetFields(), config);
+		manager.deleteSchool(schoolFields.buildSchoolFields(), false);
+		assertEquals(99, manager.listSchools(null).size());
 	}
 
 	// underlying code is not implemented yet
