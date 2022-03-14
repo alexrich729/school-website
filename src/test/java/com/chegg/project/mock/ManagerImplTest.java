@@ -127,7 +127,7 @@ public class ManagerImplTest {
 	 * @return the created entity
 	 */
 	public static Entity createNewEntity(EntityFieldsImpl ef) {
-		return createNewEntity(ef);
+		return createNewEntity(ef, null);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class ManagerImplTest {
 	@Test
 	public void testListAllUsers() {
 		List<User> users = manager.listUsers(null);
-		assertEquals(100, users);
+		assertEquals(100, users.size());
 	}
 
 	/**
@@ -186,25 +186,11 @@ public class ManagerImplTest {
 		
 		assertEquals(data.numStudents, students.size());
 	}
-
-	/**
-<<<<<<< HEAD
-	 * List all profs - expect to see the right number
-=======
-	 * Tests deleteUser by deleting one user and checking if # of users decreases by one
-	 * @throws IOException if config fails to load
->>>>>>> b4cbb07c8a18f0c16cfa1db8b0a597c73cb60568
-	 */
-	@Test
-	public void testDeleteUser() throws IOException {
-		Manager manager = createManagerWithMockData();
-
-		User user = manager.listUsers(null).get(0);
-		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
-		manager.deleteUser(userFields.buildUserFields(), false);
-		assertEquals(99, manager.listUsers(null).size());
-	}
 	
+	
+	/**
+	 * List all profs - expect to see the right number
+	 */
 	public void testListProfessors() {
 		EntityFields matchProto = new EntityFieldsImpl(EntityType.USER, config);
 		
@@ -214,6 +200,20 @@ public class ManagerImplTest {
 		List<User> profs = manager.listUsers(match);
 		
 		assertEquals(data.numProfs, profs.size());
+	}
+
+	/**
+	 * Tests deleteUser by deleting one user and checking if # of users decreases by one
+	 * @throws IOException if config fails to load
+	 */
+	@Test
+	public void testDeleteUser() throws IOException {
+		Manager manager = createManagerWithMockData();
+
+		User user = manager.listUsers(null).get(0);
+		EntityFieldsImpl userFields = new EntityFieldsImpl(EntityType.USER, user.getSetFields(), config);
+		manager.deleteUser(userFields.buildUserFields(), false);
+		assertEquals(99, manager.listUsers(null).size());
 	}
 	
 	/**
@@ -267,9 +267,13 @@ public class ManagerImplTest {
 		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
+	/**
+	 * Just list all the courses and make sure we have the right number; match logic is tested with users
+	 */
 	@Test
 	public void testListCourses() {
-		fail("Not yet implemented");
+		List<Course> courses = manager.listCourses(null);
+		assertEquals(100, courses.size());
 	}
 
 	/**
@@ -319,9 +323,13 @@ public class ManagerImplTest {
 		assert(users.get(0).hasFieldValues(searchFields));
 	}
 
+	/**
+	 * Just list all the schools and make sure we have the right number; match logic is tested with users
+	 */
 	@Test
 	public void testListSchools() {
-		fail("Not yet implemented");
+		List<School> schools = manager.listSchools(null);
+		assertEquals(100, schools.size());
 	}
 
 	/**
