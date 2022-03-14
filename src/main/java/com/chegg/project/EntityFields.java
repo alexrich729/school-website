@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chegg.project.exceptions.runtime.FieldNotSupportedException;
 import com.chegg.project.exceptions.runtime.FieldTypeException;
+import com.chegg.project.exceptions.runtime.ValidationException;
 
 /**
  * 
@@ -20,9 +21,14 @@ public interface EntityFields {
 	 */
 	EntityType getType();
 	/**
-	 * @return all the fields in the entity, in the configured order
+	 * @return all the fields that have been set into the EntityFields
 	 */
-	List<Field> getAllFields();
+	List<Field> getSetFields();
+	
+	/**
+	 * @return all the fields that have been configured for the entity type
+	 */
+	List<Field> getConfiguredFields();
 
 	/**
 	 * @return all required fields in the entity of its type
@@ -46,9 +52,9 @@ public interface EntityFields {
 	 * Sets the new field into the entity. If field with same name and type exists that field is overridden.
 	 * @param newField
 	 * @throws FieldNotSupportedException if the Entity is not configured with the given field
-	 * @throws FieldTypeException if the Entity is configured with the field name, but the field is configured with a different type
+	 * @throws FieldTypeException if the Entity is configured with the field name, but the value is not compatible
 	 */
-	void setField(Field newField) throws FieldNotSupportedException, FieldTypeException;
+	void setField(String name, Object value) throws FieldNotSupportedException, FieldTypeException;
 	/**
 	 * Sets all the given fields into the entity
 	 * @param allFields
@@ -56,4 +62,19 @@ public interface EntityFields {
 	 * @throws FieldTypeException if the Entity is configured with the field name, but a given field is configured with a different type
 	 */
 	void setAllFields(List<Field> allFields) throws FieldNotSupportedException, FieldTypeException;
+	/**
+	 * @return EntityFields casted specifically to CourseFields
+	 * @throws ValidationException if type of EntityFields is not COURSE
+	 */
+	CourseFields buildCourseFields() throws ValidationException;
+	/**
+	 * @return EntityFields casted specifically to UserFields
+	 * @throws ValidationException if type of EntityFields is not USER
+	 */
+	UserFields buildUserFields() throws ValidationException;
+	/**
+	 * @return EntityFields casted specifically to SchoolFields
+	 * @throws ValidationException if type of EntityFields is not SCHOOL
+	 */
+	SchoolFields buildSchoolFields() throws ValidationException;
 }

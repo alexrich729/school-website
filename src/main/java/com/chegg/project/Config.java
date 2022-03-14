@@ -8,9 +8,6 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
-import com.chegg.project.impl.FieldImpl;
-
-
 /**
  * 
  * Loads entity configuration and provides accessors for each entity type.
@@ -42,7 +39,7 @@ public class Config {
      * @return all the fields configured for the given entity type
      */
     @SuppressWarnings("unchecked")
-	private List<Field> getFields(EntityType type) {
+	 public List<Field> getFields(EntityType type) {
     	// the value we want to return
         ArrayList<Field> val = new ArrayList<>();
         List<Object> fields;
@@ -56,7 +53,7 @@ public class Config {
 	    			String fieldType = (String)fieldMap.get("type");
 	    			Boolean required = (Boolean)fieldMap.get("required");
 	    			Boolean multi = (Boolean)fieldMap.get("multi");
-	    			Field field = new FieldImpl(fieldName, null, FieldType.fromString(fieldType), required, multi);
+	    			Field field = new Field(fieldName, null, FieldType.fromString(fieldType), required, multi);
 	    			val.add(field);
 	    		}
 	    	}

@@ -2,17 +2,27 @@ package com.chegg.project.mock;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.chegg.project.Config;
+import com.chegg.project.CourseFields;
+import com.chegg.project.EntityFields;
 import com.chegg.project.EntityType;
+import com.chegg.project.Field;
 
 public class CourseFieldsImplTest {
-	// TODO: private CourseFields courseField = new CourseFieldsImpl();
+	private static CourseFields courseFields;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Config config = new Config();
+		EntityFields entityFields = new EntityFieldsImpl(EntityType.COURSE, config);
+		courseFields = entityFields.buildCourseFields();
+		courseFields.setField("name", "CS 101");
 	}
 
 	@AfterClass
@@ -21,13 +31,14 @@ public class CourseFieldsImplTest {
 
 	@Test
 	public void testGetType() {
-		assertEquals(EntityType.COURSE, 0);
-		fail("Not yet implemented");
+		assertEquals(EntityType.COURSE, courseFields.getType());
 	}
 
 	@Test
-	public void testGetAllFields() {
-		fail("Not yet implemented");
+	public void testGetSetFields() {
+		List<Field> fields = courseFields.getSetFields();
+		assertEquals(fields.size(), 1);
+		assertEquals(fields.get(0).getName(), "name");
 	}
 
 	@Test

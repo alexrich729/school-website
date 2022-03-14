@@ -21,12 +21,12 @@ public class EntityImpl extends EntityFieldsImpl {
 	
 	public EntityImpl(EntityType type, List<Field> fields, Config config) {
 		super(type, fields, config);
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 	
 	public EntityImpl(EntityFieldsImpl efi) {
 		super(efi);
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 
 	/**
