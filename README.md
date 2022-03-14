@@ -28,8 +28,9 @@ TODO: include website screenshots here
 TODO: insert diagram here
 
 # Object Model
+![Class Hierarchy-1](https://user-images.githubusercontent.com/67568819/158113306-76194fa8-57be-45d3-8548-4d2593444aff.jpg)
 
-TODO: insert diagram here
+
 
 # Workplan
 
