@@ -2,6 +2,7 @@ package com.chegg.project.mock;
 
 import com.chegg.project.Config;
 import com.chegg.project.Course;
+import com.chegg.project.Entity;
 import com.chegg.project.EntityType;
 import com.chegg.project.Field;
 import com.chegg.project.School;
@@ -15,18 +16,18 @@ import java.util.List;
  * @author alexrich729
  *
  */
-public class EntityImpl extends EntityFieldsImpl {
+public class EntityImpl extends EntityFieldsImpl implements Entity {
 	/** For children as they are only constructed through factory method */
 	protected EntityImpl() {}
 	
 	public EntityImpl(EntityType type, List<Field> fields, Config config) {
 		super(type, fields, config);
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 	
 	public EntityImpl(EntityFieldsImpl efi) {
 		super(efi);
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 
 	/**
@@ -44,9 +45,9 @@ public class EntityImpl extends EntityFieldsImpl {
 	}
 	
 	/**
-	 * @return Course version of this.
-	 * @throws ValidationException if this isn't of type course.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Course buildCourse() throws ValidationException {
 		if (this.type != EntityType.COURSE) {
 			throw new ValidationException("Attempt to build Course with Entity of wrong type.");
@@ -55,9 +56,9 @@ public class EntityImpl extends EntityFieldsImpl {
 	}
 	
 	/**
-	 * @return User version of this.
-	 * @throws ValidationException if this isn't of type user.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public User buildUser() throws ValidationException {
 		if (this.type != EntityType.USER) {
 			throw new ValidationException("Attempt to build User with Entity of wrong type.");
@@ -66,9 +67,9 @@ public class EntityImpl extends EntityFieldsImpl {
 	}
 	
 	/**
-	 * @return School version of this.
-	 * @throws ValidationException if this isn't of type school.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public School buildSchool() throws ValidationException {
 		if (this.type != EntityType.SCHOOL) {
 			throw new ValidationException("Attempt to build School with Entity of wrong type.");

@@ -10,7 +10,10 @@ import com.chegg.project.exceptions.runtime.ValidationException;
 
 public class EntityFieldsImpl implements EntityFields {
 	protected EntityType type;
-	protected List<Field> fields;
+	/**
+	 * These are the fields that have been set so far into EntityFields
+	 */
+	protected List<Field> fieldsSet;
 	protected Config config;
 	
 	/** For some children as they are only constructed through factory method */
@@ -18,33 +21,33 @@ public class EntityFieldsImpl implements EntityFields {
 
 	public EntityFieldsImpl(EntityType type, Config config) {
 		this.type = type;
-		this.fields = new ArrayList<>();
+		this.fieldsSet = new ArrayList<>();
 		this.config = config;
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 
 	public EntityFieldsImpl(EntityType type, List<Field> fields, Config config) {
 		this.type = type;
-		this.fields = fields;
+		this.fieldsSet = fields;
 		this.config = config;
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 	
 	/** Copy constructor */
 	public EntityFieldsImpl(EntityFieldsImpl efi) {
 		this.type = efi.getType();
-		this.fields = efi.getAllFields();
+		this.fieldsSet = efi.getSetFields();
 		this.config = efi.getConfig();
-		validate(this.fields);
+		validate(this.fieldsSet);
 	}
 	
 	/**
-	 * @param allFields should only have fields that are valid to the entity type
+	 * @param providedFields should only have fields that are valid to the entity type
 	 * @throws ValidationException if any of the fields aren't required or optional to the entity type
 	 */
-	public void validate(List<Field> allFields) throws ValidationException {
-		for (int i = 0; i < allFields.size(); i++) {
-			Field curField = allFields.get(i);
+	public void validate(List<Field> providedFields) throws ValidationException {
+		for (int i = 0; i < providedFields.size(); i++) {
+			Field curField = providedFields.get(i);
 			if (!containsField(getRequiredFields(), curField) && !containsField(getOptionalFields(), curField)) {
 				throw new ValidationException();
 			}
@@ -76,8 +79,16 @@ public class EntityFieldsImpl implements EntityFields {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Field> getAllFields() {
-		return fields;
+	public List<Field> getConfiguredFields() {
+		return config.getFields(type);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Field> getSetFields() {
+		return fieldsSet;
 	}
 
 	/**
@@ -101,8 +112,8 @@ public class EntityFieldsImpl implements EntityFields {
 	 */
 	@Override
 	public Field getField(String fieldName) {
-		for (int i = 0; i < fields.size(); i++) {
-			Field curField = fields.get(i);
+		for (int i = 0; i < fieldsSet.size(); i++) {
+			Field curField = fieldsSet.get(i);
 			if (curField.getName().equals(fieldName))
 				return curField;
 		}
@@ -113,50 +124,32 @@ public class EntityFieldsImpl implements EntityFields {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setField(Field newField) throws FieldNotSupportedException, FieldTypeException {
-		// overrides same field as newField if it already exists or throws exception if they have the same name but different types
-		Field tmpField;
-		for (int i = 0; i < fields.size(); i++) {
-			tmpField = fields.get(i);
-			if (tmpField.isSameField(newField)) {
-				fields.remove(i);
-				fields.add(newField);
-				return;
-			}
-			if (tmpField.getName().equals(newField.getName())) {
-				throw new FieldTypeException("Given field has same name as an existing field but different type.");
-			}
-			
+	public void setField(String name, Object value) throws FieldNotSupportedException, FieldTypeException {
+		// First, check if the field is valid for this entity
+		Field configuredField = null;
+		for (Field field : getConfiguredFields()) {
+			if (field.getName().equals(name))
+				configuredField = field;
 		}
-
-		// checks to see if field is required field or has same name as required field with the wrong type
-		List<Field> requiredFields = getRequiredFields();
-		for (int i = 0; i < requiredFields.size(); i++) {
-			tmpField = requiredFields.get(i);
-			if (tmpField.isSameField(newField)) {
-				fields.add(newField);
-				return;
-			}
-			if (tmpField.getName().equals(newField.getName())) {
-				throw new FieldTypeException("Given field has same name as a required field but different type.");
-			}
+		if (configuredField == null)
+			throw new FieldNotSupportedException("No field " + name + " in entity of type " + getType().toString());
+		
+		// Next, get the existing field, if there is one
+		Field existingField = null;
+		for (Field field : getSetFields()) {
+			if (field.getName().equals(name))
+				existingField = field;
 		}
-
-		// checks to see if field is optional field or has same name as optional field with the wrong type
-		List<Field> optionalFields = getOptionalFields();
-		for (int i = 0; i < optionalFields.size(); i++) {
-			tmpField = optionalFields.get(i);
-			if (tmpField.isSameField(newField)) {
-				fields.add(newField);
-				return;
-			}
-			if (tmpField.getName().equals(newField.getName())) {
-				throw new FieldTypeException("Given field has same name as an optional field but different type.");
-			}
-		}
-
-		// field hasn't been found to be available in this type of entity
-		throw new FieldNotSupportedException();
+		
+		// Create new field if needed
+		Field fieldToUpdate = existingField;
+		if (fieldToUpdate == null)
+			fieldToUpdate = new Field(configuredField);
+		
+		// Set the value into the field and add to setFields as needed
+		fieldToUpdate.setValue(value);
+		if (existingField == null)
+			fieldsSet.add(fieldToUpdate);
 	}
 
 	/**
@@ -164,8 +157,8 @@ public class EntityFieldsImpl implements EntityFields {
 	 */
 	@Override
 	public void setAllFields(List<Field> allFields) throws FieldNotSupportedException, FieldTypeException {
-		for (int i = 0; i < allFields.size(); i++) {
-			setField(allFields.get(i));
+		for (Field field : allFields) {
+			setField(field.getName(), field.getValue());
 		}
 	}
 
@@ -178,9 +171,9 @@ public class EntityFieldsImpl implements EntityFields {
 	}
 	
 	/**
-	 * @return CourseField version of this.
-	 * @throws ValidationException if this isn't of type course.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public CourseFields buildCourseFields() throws ValidationException {
 		if (this.type != EntityType.COURSE) {
 			throw new ValidationException("Attempt to build CourseFields with EntityFields of wrong type.");
@@ -189,9 +182,9 @@ public class EntityFieldsImpl implements EntityFields {
 	}
 	
 	/**
-	 * @return UserField version of this.
-	 * @throws ValidationException if this isn't of type user.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public UserFields buildUserFields() throws ValidationException {
 		if (this.type != EntityType.USER) {
 			throw new ValidationException("Attempt to build UserFields with EntityFields of wrong type.");
@@ -200,9 +193,9 @@ public class EntityFieldsImpl implements EntityFields {
 	}
 	
 	/**
-	 * @return SchoolField version of this.
-	 * @throws ValidationException if this isn't of type school.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public SchoolFields buildSchoolFields() throws ValidationException {
 		if (this.type != EntityType.SCHOOL) {
 			throw new ValidationException("Attempt to build SchoolFields with EntityFields of wrong type.");
@@ -215,12 +208,12 @@ public class EntityFieldsImpl implements EntityFields {
 	 */
 	@Override
 	public boolean hasFieldValues(EntityFieldsImpl efi) {
-		List<Field> otherFields = efi.getAllFields();
+		List<Field> otherFields = efi.getSetFields();
 		for (int i = 0; i < otherFields.size(); i++) {
 			Field tmpField = otherFields.get(i);
 			boolean fieldFound = false;
-			for (int j = 0; j < fields.size(); j++) {
-				if (tmpField.isSameFieldAndVal(fields.get(j)))
+			for (int j = 0; j < fieldsSet.size(); j++) {
+				if (tmpField.isSameFieldAndVal(fieldsSet.get(j)))
 					fieldFound = true;
 			}
 			if (!fieldFound)

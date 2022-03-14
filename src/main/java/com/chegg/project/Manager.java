@@ -21,25 +21,23 @@ public interface Manager {
 	void addUser(User user);
 	
 	/** 
-	 *  Updates an entity in two steps:  1) find the entity(s) to update, 2) update them
-	 *  @param selector - Entity fields that are to be matched to find the entities to update
-	 *  @param newData - the new field values to assign to matching entities
-	 *  @param moreThanOne - allows updating more than one entity record
-	 *  @param entities - data of entity type being updated
-	 *  @return int indicating the number of entities updated
+	 *  Updates an user in two steps:  1) find the user(s) to update, 2) update them
+	 *  @param selector - User fields that are to be matched to find the users to update
+	 *  @param newData - the new field values to assign to matching users
+	 *  @param moreThanOne - allows updating more than one user record
+	 *  @return int indicating the number of users updated
 	 *  @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
 	 */
-	int updateUser(EntityFields selector, EntityFields newData, boolean moreThanOne, List<Entity> entities)
+	int updateUser(UserFields selector, UserFields newData, boolean moreThanOne)
 			throws TooManyMatchesException;
 	/**
-	 * Get a list of entities matching the given data.
+	 * Get a list of users matching the given data.
 	 * @param match - the fields that should be matched to generate a list of results
-	 * @param entities - data of entity type being listed
 	 * @return a list of results
 	 */
-	List<Entity> listEntities(EntityFields match, List<Entity> entities);
+	List<User> listUsers(UserFields match);
 	/**
-	 * Delete entity.
+	 * Delete user.
 	 * @param match
 	 * @return int indicating the number of records deleted:
 	 * 	    1: if one record deleted
@@ -47,7 +45,7 @@ public interface Manager {
 	 *      >1: if multiple records matched and deleted
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 */
-	int deleteEntity(EntityFields match, Boolean moreThanOne, List<Entity> entities);
+	int deleteUser(UserFields match, boolean moreThanOne);
 	
 	// ADDITIONAL APIS
 	
@@ -61,10 +59,10 @@ public interface Manager {
 	 * @param selector - course fields that are to be matched to find the courses to update
 	 * @param newData - the new field values to assign to matching courses
 	 * @param moreThanOne - allows updating more than one course record
-	 * @return UpdateReport indicating the number of users selected and the number updated
+	 * @return int indicating the number of courses updated
 	 * @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
 	 */
-	Boolean updateCourse(CourseFields selector, CourseFields newData, Boolean moreThanOne)
+	int updateCourse(CourseFields selector, CourseFields newData, boolean moreThanOne)
 		throws TooManyMatchesException;
 	
 	/**
@@ -83,19 +81,30 @@ public interface Manager {
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 * 
 	 */
-	int deleteCourse(CourseFields match, Boolean moreThanOne);
+	int deleteCourse(CourseFields match, boolean moreThanOne);
 
 	/**
 	 * Adds the given school
 	 */
 	void addSchool(School school);
+	
+	/**
+	 * Updates a school in two steps: 1) find the school(s) to update, 2) update them
+	 * @param selector - school fields that are to be matched to find the school to update
+	 * @param newData - the new field values to assign to matching schools
+	 * @param moreThanOne - allows updating more than one school record
+	 * @return int indicating the number of schools updated
+	 * @throws TooManyMatchesException if the update would affect more than one record, but moreThanOne is FALSE
+	 */
+	int updateCourse(SchoolFields selector, SchoolFields newData, boolean moreThanOne)
+		throws TooManyMatchesException;
 
 	/**
 	 * Get a list of courses matching the given data.
 	 * @param school - the name of school to matched to
 	 * @return a list of results
 	 */
-	List<Course> listSchools(String school);
+	List<School> listSchools(SchoolFields school);
 	/**
 	 * Delete course.
 	 * @param school
@@ -106,7 +115,7 @@ public interface Manager {
 	 *      -1: if multiple records matched, but none deleted b/c moreThanOne==FALSE
 	 *
 	 */
-	int deleteSchool(String school, Boolean moreThanOne);
+	int deleteSchool(SchoolFields school, boolean moreThanOne);
 	
 	/**
 	 * Gets a single suggested completion which will be something in our database that matches the given prefix, e.g.
